@@ -19,6 +19,10 @@ cd Compressing-Media
 ```
 3. Install Python dependecies :
 ```markdown
+ python -m venv venv    
+.\venv\Scripts\activate   
+```  
+```markdown
 pip install -r requirements.txt
 ```
 4. Jalankan Aplikasi :
