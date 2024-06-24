@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 UPLOAD_FOLDER = 'files'
 ALLOWED_IMAGE_EXTENSIONS = {'png', 'jpg', 'jpeg'}
-ALLOWED_AUDIO_EXTENSIONS = {'wav'}
+ALLOWED_AUDIO_EXTENSIONS = {'wav', 'mp3'}
 ALLOWED_VIDEO_EXTENSIONS = {'mp4', 'avi', 'mkv'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
@@ -53,11 +53,8 @@ def post_endpoint_image():
     if image_file.filename == '':
         return redirect(url_for('index'))
 
-    image_quality = request.form['quality']
-    if not image_quality:
-        image_quality = 50
-    else:
-        image_quality = int(image_quality)
+    image_quality = request.form.get('quality', 50)
+    image_quality = int(image_quality)
 
     if image_file and allowed_file(image_file.filename, ALLOWED_IMAGE_EXTENSIONS):
         filename = secure_filename(image_file.filename)
@@ -96,24 +93,21 @@ def post_endpoint_audio():
     if audio_file.filename == '':
         return redirect(url_for('index'))
 
-    audio_quality = request.form['quality']
-    if not audio_quality:
-        audio_quality = 128  # default 128 kbps
-    else:
-        audio_quality = int(audio_quality)
+    audio_quality = request.form.get('quality', 128)
+    audio_quality = int(audio_quality)
 
     if audio_file and allowed_file(audio_file.filename, ALLOWED_AUDIO_EXTENSIONS):
         filename = secure_filename(audio_file.filename)
         audio_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
         original_audio_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        compressed_audio_path = os.path.join(app.config['UPLOAD_FOLDER'], 'compressed_' + filename)
+        compressed_audio_path = os.path.join(app.config['UPLOAD_FOLDER'], 'compressed_' + os.path.splitext(filename)[0] + '.mp3')
 
         original_audio = AudioSegment.from_file(original_audio_path)
         original_size = os.path.getsize(original_audio_path)
 
         # Convert quality from percentage to kbps
-        audio_bitrate = int((audio_quality / 100) * 320)
+        audio_bitrate = audio_quality
 
         # Export compressed audio to MP3 format
         original_audio.export(compressed_audio_path, format='mp3', bitrate=f"{audio_bitrate}k")
@@ -127,7 +121,7 @@ def post_endpoint_audio():
 
         return render_template('audio.html',
                                original_audio=url_for('uploaded_file', filename=filename),
-                               compressed_audio=url_for('uploaded_file', filename='compressed_' + filename),
+                               compressed_audio=url_for('uploaded_file', filename='compressed_' + os.path.splitext(filename)[0] + '.mp3'),
                                original_size=original_size_formatted,
                                compressed_size=compressed_size_formatted,
                                compression_ratio=compression_ratio)
@@ -143,11 +137,8 @@ def post_endpoint_video():
     if video_file.filename == '':
         return redirect(url_for('index'))
 
-    video_quality = request.form['quality']
-    if not video_quality:
-        video_quality = 50  # default 50% quality
-    else:
-        video_quality = int(video_quality)
+    video_quality = request.form.get('quality', 50)
+    video_quality = int(video_quality)
 
     if video_file and allowed_file(video_file.filename, ALLOWED_VIDEO_EXTENSIONS):
         filename = secure_filename(video_file.filename)
@@ -160,7 +151,7 @@ def post_endpoint_video():
         original_size = os.path.getsize(original_video_path)
 
         # Convert quality from percentage to bitrate
-        video_bitrate = int((video_quality / 100) * 1000)
+        video_bitrate = int((video_quality / 100) * 1000)  # Adjust this value as needed
 
         # Export compressed video to MP4 format
         original_video.write_videofile(compressed_video_path, codec='libx264', audio_codec='aac', bitrate=f"{video_bitrate}k")
