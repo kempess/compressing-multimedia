@@ -2,4 +2,3 @@ Flask
 Pillow
 pydub
 moviepy
-vercel-python
