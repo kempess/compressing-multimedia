@@ -4,14 +4,16 @@ from PIL import Image
 from pydub import AudioSegment
 from moviepy.editor import VideoFileClip
 import os
+import logging
 
 app = Flask(__name__)
-
-UPLOAD_FOLDER = 'files'
+UPLOAD_FOLDER = '/tmp'
 ALLOWED_IMAGE_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 ALLOWED_AUDIO_EXTENSIONS = {'wav', 'mp3'}
 ALLOWED_VIDEO_EXTENSIONS = {'mp4', 'avi', 'mkv'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+logging.basicConfig(level=logging.INFO)
 
 def allowed_file(filename, allowed_extensions):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowed_extensions
