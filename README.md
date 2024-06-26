@@ -25,6 +25,10 @@ cd Compressing-Media
 ```markdown
 pip install -r requirements.txt
 ```
+4. Jika dependencies python telah usang, update ke :
+```markdown
+python script.py
+```
 4. Jalankan Aplikasi :
 ``` markdown
 python script.py
