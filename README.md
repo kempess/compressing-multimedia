@@ -1,7 +1,11 @@
 # Compressing Media
+______
+
 Aplikasi ini bertujuan untuk melakukan kompresi berbagai jenis file media, dengan tujuan mengurangi ukuran file sambil mempertahankan kualitas yang dapat diterima. Baik itu gambar, video, maupun file audio, teknik kompresi yang efisien sangat penting untuk mengoptimalkan ruang penyimpanan dan meningkatkan kecepatan transfer.
 
 ## Fitur-fitur :
+______
+
 1. ***Kompresi Gambar:*** Alat dan skrip untuk mengurangi ukuran gambar tanpa mengorbankan kualitas secara signifikan.
 2. ***Kompresi Video:*** Teknik untuk mengompresi file video agar lebih cocok untuk streaming atau penyimpanan.
 3. ***Kompresi Audio:*** Metode untuk mengurangi ukuran file rekaman audio sambil mempertahankan kualitas suara.
@@ -9,6 +13,8 @@ Aplikasi ini bertujuan untuk melakukan kompresi berbagai jenis file media, denga
 5. ***Kontrol Kualitas:*** Panduan dan konfigurasi untuk menyeimbangkan antara pengurangan ukuran file dan mempertahankan kualitas media yang dapat diterima.
 
 ### Cara Menjalankan
+______
+
 1. Clone Repository terlebih dahulu :
 ```markdown
 git clone https://github.com/kempess/Compressing-Media.git
@@ -22,26 +28,49 @@ cd Compressing-Media
  python -m venv venv    
 .\venv\Scripts\activate   
 ```  
+4. Instal Flask:
+Pastikan Flask diinstal dengan benar dalam environment virtual Anda. Jalankan perintah berikut untuk menginstal Flask:
+```markdown
+pip install Flask
+```
+5. Instal pydub:
+Pastikan pydub terinstal dengan benar:
+```markdown
+pip install pydub
+```
+6. install requirements
 ```markdown
 pip install -r requirements.txt
 ```
-4. Jika dependencies python telah usang, update ke :
+7. Install ffmpeg :
+Instal ffmpeg:
+pydub memerlukan ffmpeg atau libav untuk memproses file audio. Anda perlu menginstal salah satu dari mereka dan memastikan mereka berada dalam sistem PATH Anda. Anda dapat mendownload ffmpeg dari situs resmi [ffmpeg](https://ffmpeg.org/download.html) dan mengikuti instruksi instalasi untuk OS Anda.
+
+Setelah menginstal ffmpeg, pastikan ffmpeg dapat diakses dari command line:
 ```markdown
-python script.py
+ffmpeg -version
 ```
-4. Jalankan Aplikasi :
+8. Jika dependencies python telah usang, update ke :
+```markdown
+python.exe -m pip install --upgrade pip
+```
+9. Jalankan Aplikasi :
 ``` markdown
 python script.py
 ```
 
 #### Penjelasan Detail
+______
 Kode di atas merupakan sebuah aplikasi web berbasis Flask yang memungkinkan pengguna untuk mengunggah dan mengompres file gambar, audio, dan video. Aplikasi ini menggunakan beberapa pustaka eksternal untuk kompresi file, yaitu:
 
 1. **PIL (Python Imaging Library)** untuk kompresi gambar.
 2. **pydub** untuk kompresi audio.
 3. **moviepy** untuk kompresi video.
 
+
+
 Berikut adalah penjelasan tentang algoritma dan teknik kompresi yang digunakan:
+______
 
 ##### 1. Kompresi Gambar
 PIL digunakan untuk membuka dan menyimpan gambar dengan kualitas yang ditentukan oleh pengguna. Algoritma kompresi yang digunakan oleh PIL tergantung pada format gambar, misalnya:
@@ -75,6 +104,7 @@ original_video.write_videofile(compressed_video_path, codec='libx264', audio_cod
 `video_bitrate` mengatur bitrate video dalam kbps. Bitrate lebih rendah berarti kompresi lebih tinggi (dan kualitas lebih rendah).
 
 ##### Ringkasan
+______
 - **Gambar**: Kompresi dilakukan dengan PIL menggunakan DCT untuk JPEG atau DEFLATE untuk PNG.
 - **Audio**: Kompresi dilakukan dengan pydub menggunakan MDCT untuk MP3.
 - **Video**: Kompresi dilakukan dengan moviepy menggunakan H.264.
