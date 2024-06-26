@@ -33,3 +33,50 @@ python script.py
 ``` markdown
 python script.py
 ```
+
+#### Penjelasan Detail
+Kode di atas merupakan sebuah aplikasi web berbasis Flask yang memungkinkan pengguna untuk mengunggah dan mengompres file gambar, audio, dan video. Aplikasi ini menggunakan beberapa pustaka eksternal untuk kompresi file, yaitu:
+
+1. **PIL (Python Imaging Library)** untuk kompresi gambar.
+2. **pydub** untuk kompresi audio.
+3. **moviepy** untuk kompresi video.
+
+Berikut adalah penjelasan tentang algoritma dan teknik kompresi yang digunakan:
+
+##### 1. Kompresi Gambar
+PIL digunakan untuk membuka dan menyimpan gambar dengan kualitas yang ditentukan oleh pengguna. Algoritma kompresi yang digunakan oleh PIL tergantung pada format gambar, misalnya:
+- **JPEG** menggunakan kompresi lossy dengan algoritma Discrete Cosine Transform (DCT).
+- **PNG** menggunakan kompresi lossless dengan algoritma DEFLATE.
+
+Dalam kode:
+```markdown
+original_image.save(compressed_image_path, quality=image_quality)
+```
+`image_quality` adalah parameter yang dikontrol pengguna untuk mengatur tingkat kompresi. Nilai yang lebih rendah berarti kompresi lebih tinggi (dan kualitas lebih rendah).
+
+##### 2. Kompresi Audio
+Pydub digunakan untuk mengonversi dan mengompres file audio. Algoritma kompresi yang digunakan adalah:
+- **MP3** menggunakan kompresi lossy dengan algoritma Modified Discrete Cosine Transform (MDCT).
+
+Dalam kode:
+```markdown
+original_audio.export(compressed_audio_path, format='mp3', bitrate=f"{audio_bitrate}k")
+```
+`audio_bitrate` mengatur bitrate audio dalam kbps. Bitrate lebih rendah berarti kompresi lebih tinggi (dan kualitas lebih rendah).
+
+##### 3. Kompresi Video
+Moviepy digunakan untuk membuka dan menyimpan video dengan kualitas yang ditentukan oleh pengguna. Algoritma kompresi yang digunakan oleh moviepy, melalui codec `libx264`, adalah:
+- **H.264** (atau AVC) yang menggunakan kompresi lossy dengan berbagai teknik seperti Intra-frame dan Inter-frame compression.
+
+Dalam kode:
+```markdown
+original_video.write_videofile(compressed_video_path, codec='libx264', audio_codec='aac', bitrate=f"{video_bitrate}k")
+```
+`video_bitrate` mengatur bitrate video dalam kbps. Bitrate lebih rendah berarti kompresi lebih tinggi (dan kualitas lebih rendah).
+
+##### Ringkasan
+- **Gambar**: Kompresi dilakukan dengan PIL menggunakan DCT untuk JPEG atau DEFLATE untuk PNG.
+- **Audio**: Kompresi dilakukan dengan pydub menggunakan MDCT untuk MP3.
+- **Video**: Kompresi dilakukan dengan moviepy menggunakan H.264.
+
+Setiap kompresi menggunakan parameter kualitas atau bitrate yang ditentukan oleh pengguna, yang menentukan tingkat kompresi dan kualitas output.
